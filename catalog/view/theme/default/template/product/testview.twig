@@ -1,7 +1,15 @@
+{{header}}
 <div>
-{{ example }} {{example2}}
-</div>
+	<div>
+		{{ example }}
+		{{ example2 }}
+		{% for category in categories %}
+			{{category.category_id}}
+		{% endfor %}
+	</div>
 
-<div>
-{{ example3 }}
+	<div>
+		{{ example3 }}
+	</div>
 </div>
+{{footer}}

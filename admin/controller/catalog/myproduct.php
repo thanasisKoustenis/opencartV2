@@ -1,12 +1,35 @@
 <?php
 
 
-class ControllerProductMyproduct extends Controller
+class ControllerCatalogMyproduct extends Controller
 {
 
     public function index()
-    {
-        $this->load->language('product/product');
+    {   
+        $url = '';
+
+        $this->load->language('catalog/product');
+        $this->load->model('catalog/product');
+        $this->document->setTitle($this->language->get('heading_title'));
+
+        $data =array();
+        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['column_right'] = $this->load->controller('common/column_right');
+        $data['content_top'] = $this->load->controller('common/content_top');
+        $data['content_bottom'] = $this->load->controller('common/content_bottom');
+        $data['footer'] = $this->load->controller('common/footer');
+        $data['header'] = $this->load->controller('common/header');
+
+        if ($this->request->server['REQUEST_METHOD'] == 'POST') {
+            $this->response->redirect($this->url->link('catalog/myproduct', 'user_token=' . $this->session->data['user_token'], true));
+        }
+
+        $this->response->setOutput($this->load->view('catalog/product', $data));
+        
+    }
+
+    public function getCategories() {
+        $this->load->language('catalog/category');
 
         $this->load->model('catalog/category');
 
@@ -18,9 +41,9 @@ class ControllerProductMyproduct extends Controller
         $data['example'] = 'Hello';
         $data['example2'] = "Hey";
         $data['example3'] = $rowsData[0]['category_id'];
+        $data['categories'][] = $rowsData;
         
-        $this->response->setOutput($this->load->view('product/testview', $data));
-    
+        $this->response->setOutput($this->load->view('catalog/testview', $data));
     }
 
     public function getAllProducts() {
