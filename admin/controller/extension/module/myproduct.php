@@ -32,10 +32,12 @@ class ControllerExtensionModuleMyproduct extends Controller
 
         $this->load->model('catalog/product');
 
+        $postData = $this->request->post;
+
         if ($this->request->server['REQUEST_METHOD'] == 'POST') {
 
-            $postData = trim(file_get_contents('php://input'));
-
+            // $postData = trim(file_get_contents('php://input'));
+            
             if (isset($postData)) {
 
                 // $xml = simplexml_load_string($postData);
@@ -46,10 +48,14 @@ class ControllerExtensionModuleMyproduct extends Controller
                     echo $item->nodeName . ' = ' . $item -> nodeValue . '<br>';
                 }
 
-                // $this->model_catalog_product->addProduct();
-
+                
+                $this->model_catalog_product->addProduct();
             }
+
+            $this->response->redirect($this->url->link('extension/module/myproduct', 'user_token=' . $this->session->data['user_token'], true));
         }
+
+        
     }
 
     public function getXMLProducts()
@@ -65,6 +71,8 @@ class ControllerExtensionModuleMyproduct extends Controller
         $data['prodXML'] = $this->makeXML($rowsData, 'products', 'product');
         $data['index'] = $this->url->link('extension/module/myproduct', 'user_token=' . $this->session->data['user_token'], true);
         $this->response->setOutput($this->load->view('extension/module/getProductsXML', $data));
+        // $this->response->setOutput($this->load->view('extension/module/myview', $data));
+        
         
         
     }
